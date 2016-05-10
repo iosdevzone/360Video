@@ -57,8 +57,21 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //let urlString = "http://all360media.com/wp-content/uploads/pano/laphil/media/video-ios.mp4"
+        let urlString = "http://kolor.com/360-videos-files/kolor-balloon-icare-full-hd.mp4"
+        guard let url = NSURL(string: urlString) else {
+            fatalError("Failed to create URL")
+        }
         
-        let sphereNode = createSphereNode(material:nil)
+        let player = AVPlayer(URL: url)
+        let videoNode = SKVideoNode(AVPlayer: player)
+        let size = CGSizeMake(1024,512)
+        videoNode.size = size
+        videoNode.position = CGPointMake(size.width/2.0,size.height/2.0)
+        let spriteScene = SKScene(size: size)
+        spriteScene.addChild(videoNode)
+        
+        let sphereNode = createSphereNode(material:spriteScene)
         configureScene(node: sphereNode)
         guard motionManager.deviceMotionAvailable else {
             fatalError("Device motion is not available")
